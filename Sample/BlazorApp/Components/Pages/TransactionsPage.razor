@@ -1,0 +1,87 @@
+﻿@page "/transactions"
+
+@using Teller.Api
+@using Teller.Api.Contracts
+@using Teller.Client
+@using Teller.Client.Contracts
+
+@inject IEnrollmentProvider EnrollmentProvider
+
+<PageTitle>Transactions</PageTitle>
+
+@if (EnrollmentProvider.Enrollment is not null)
+{
+    @if (TransactionsByAccount is not null && TransactionsByAccount.Any())
+    {
+        @foreach (var group in TransactionsByAccount)
+        {
+            <h5 class="mt-4">Account: @group.Key</h5>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tx in group.Value)
+                    {
+                        <tr>
+                            <td>@tx.Id</td>
+                            <td>@tx.Date</td>
+                            <td>@tx.Amount</td>
+                            <td>@tx.Status</td>
+                            <td>@tx.Type</td>
+                            <td>@tx.Description</td>
+                            <td>@tx.Details.Category</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <p>Loading data...</p>
+    }
+}
+else
+{
+    <p>Please <a href="/">Enroll</a> to view accounts.</p>
+}
+
+@code {
+
+    [Inject] ITellerClient TellerClient { get; set; } = default!;
+
+    List<Transaction>? Transactions { get; set; }
+
+    Dictionary<string, List<Transaction>> TransactionsByAccount { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (EnrollmentProvider.Enrollment is null)
+        {
+            return;
+        }
+
+        var accounts = await TellerClient.GetAccountsAsync(EnrollmentProvider.Enrollment!.AccessToken);
+
+        if (accounts != null)
+        {
+            foreach (var account in accounts)
+            {
+                var transactions = await TellerClient.GetTransactionsAsync(EnrollmentProvider.Enrollment!.AccessToken, account.Id, 10);
+                if (transactions != null)
+                {
+                    TransactionsByAccount[account.Id] = transactions;
+                }
+            }
+        }
+    }
+}

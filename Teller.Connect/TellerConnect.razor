@@ -1,0 +1,35 @@
+﻿@using Microsoft.JSInterop
+@using Teller.Connect.Contracts
+@inject IJSRuntime JS
+
+<button class="@ButtonClass" style="@ButtonStyle" @onclick="LaunchTellerConnect">@ButtonText</button>
+
+@code 
+{
+    [Parameter] public string ButtonText { get; set; } = "Connect your bank";
+
+    [Parameter] public string ButtonClass { get; set; } = "btn btn-primary";
+
+    [Parameter] public string ButtonStyle { get; set; } = string.Empty;
+
+    [Parameter] public string Environment { get; set; } = "sandbox";
+
+    [Parameter] public string ApplicationId { get; set; } = string.Empty;
+
+    [Parameter] public List<string> Products { get; set; } = [];
+
+    [Parameter] public EventCallback<EnrollmentCallbackData> OnConnected { get; set; }
+
+    private async Task LaunchTellerConnect()
+    {
+        if (!OnConnected.HasDelegate)
+        {
+            throw new InvalidOperationException("OnConnected callback must be set to handle the enrollment callback.");
+        }
+
+        await JS.InvokeVoidAsync("launchTellerConnect", DotNetObjectReference.Create(this), Environment, ApplicationId, Products);
+    }
+
+    [JSInvokable]
+    public Task OnSuccess(EnrollmentCallbackData enrollment) => OnConnected.InvokeAsync(enrollment);
+}

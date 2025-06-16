@@ -1,0 +1,103 @@
+﻿@page "/accounts"
+
+@using Teller.Api
+@using Teller.Api.Contracts
+@using Teller.Client
+@using Teller.Client.Contracts
+
+@inject IEnrollmentProvider EnrollmentProvider
+
+<PageTitle>Accounts</PageTitle>
+
+@if (EnrollmentProvider.Enrollment is not null)
+{
+    @if (Accounts is not null && Accounts.Any() && Balances is not null && Balances.Any())
+    {
+        <h3>Accounts</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Currency</th>
+                    <th>Last Four</th>
+                    <th>Enrollment ID</th>
+                    <th>Institution</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in Accounts)
+                {
+                    <tr>
+                        <td>@account.Id</td>
+                        <td>@account.Name</td>
+                        <td>@account.Status</td>
+                        <td>@account.Type</td>
+                        <td>@account.Subtype</td>
+                        <td>@account.Currency</td>
+                        <td>@account.LastFour</td>
+                        <td>@account.EnrollmentId</td>
+                        <td>@account.Institution?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h3>Balances</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Available</th>
+                    <th>Ledger</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var balance in Balances)
+                {
+                    <tr>
+                        <td>@balance.AccountId</td>
+                        <td>@balance.Available</td>
+                        <td>@balance.Ledger</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Loading data...</p>
+    }
+}
+else 
+{
+    <p>Please <a href="/">Enroll</a> to view accounts.</p>
+}
+
+@code {
+
+    [Inject] ITellerClient TellerClient { get; set; } = default!;
+
+    List<Account>? Accounts { get; set; }
+    List<Balance>? Balances { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (EnrollmentProvider.Enrollment is null)
+        {
+            return;
+        }
+
+        Accounts = await TellerClient.GetAccountsAsync(EnrollmentProvider.Enrollment!.AccessToken);  
+        Balances = new List<Balance>();
+
+        foreach (var account in Accounts)
+        {
+            var balance = await TellerClient.GetBalanceAsync(EnrollmentProvider.Enrollment!.AccessToken, account.Id);
+            Balances.Add(balance);
+        }
+    }
+}

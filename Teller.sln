@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teller.Api", "Teller.Api\Teller.Api.csproj", "{B76FE750-05F3-47C8-84DF-890F3DE537FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "Sample\ConsoleApp\ConsoleApp.csproj", "{F7131398-CA16-4530-9120-CE8500DF3F12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teller.Connect", "Teller.Connect\Teller.Connect.csproj", "{9249A505-59CD-4A66-A456-6529B4B6D032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "Sample\BlazorApp\BlazorApp.csproj", "{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CertConverter", "CertConverter", "{4C82E963-195C-427B-B581-7E048D73140F}"
+	ProjectSection(SolutionItems) = preProject
+		CertConverter\Convert.ps1 = CertConverter\Convert.ps1
+		CertConverter\Dockerfile = CertConverter\Dockerfile
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B76FE750-05F3-47C8-84DF-890F3DE537FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B76FE750-05F3-47C8-84DF-890F3DE537FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B76FE750-05F3-47C8-84DF-890F3DE537FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B76FE750-05F3-47C8-84DF-890F3DE537FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7131398-CA16-4530-9120-CE8500DF3F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7131398-CA16-4530-9120-CE8500DF3F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7131398-CA16-4530-9120-CE8500DF3F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7131398-CA16-4530-9120-CE8500DF3F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9249A505-59CD-4A66-A456-6529B4B6D032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9249A505-59CD-4A66-A456-6529B4B6D032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9249A505-59CD-4A66-A456-6529B4B6D032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9249A505-59CD-4A66-A456-6529B4B6D032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F7131398-CA16-4530-9120-CE8500DF3F12} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{42A4B2C0-CD81-4BDA-B9DA-6CCF988BB23D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {490FB8E7-C00F-438F-89D9-7C7C36A59DAE}
+	EndGlobalSection
+EndGlobal

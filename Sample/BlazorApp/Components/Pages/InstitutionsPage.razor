@@ -1,0 +1,62 @@
+﻿@page "/institutions"
+
+@using Teller.Api
+@using Teller.Client
+@using Teller.Client.Contracts
+
+<PageTitle>Institutions</PageTitle>
+
+@if (Institutions is not null && Institutions.Any())
+{
+    <h3>Institutions</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bank Name</th>
+                <th>ID</th>
+                <th>Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bank in Institutions)
+            {
+                <tr>
+                    <td>@bank.Name</td>
+                    <td>@bank.Id</td>
+                    <td>
+                        @if (bank.Products?.Count > 0)
+                        {
+                            <ul>
+                                @foreach (var product in bank.Products)
+                                {
+                                    <li>@product</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No products available</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Loading data...</p>
+}
+
+@code {
+
+    [Inject] ITellerClient TellerClient { get; set; } = default!;
+
+    List<Institution>? Institutions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Institutions = await TellerClient.GetInstitutionsAsync();
+    }
+}

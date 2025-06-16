@@ -1,0 +1,53 @@
+﻿@page "/"
+
+@using Teller.Connect
+@using Teller.Connect.Contracts
+
+@inject IEnrollmentProvider EnrollmentProvider
+@inject IConfiguration Configuration
+
+<PageTitle>Teller Connect</PageTitle>
+
+<TellerConnect Environment="@Configuration["Environment"]" ApplicationId="@Configuration["ApplicationId"]" Products="@Products" OnConnected="@OnConnected" />
+
+@if (EnrollmentProvider.Enrollment is not null)
+{
+    <div class="enrollment-container">
+        <p><h3>Enrollment Details</h3></p>
+
+        <p><strong>Access Token:</strong> @EnrollmentProvider.Enrollment.AccessToken</p>
+
+        <h4>User Information</h4>
+        <p><strong>Id:</strong> @EnrollmentProvider.Enrollment.User.Id</p>
+
+        <h4>Enrollment Information</h4>
+        <p><strong>Enrollment Id:</strong> @EnrollmentProvider.Enrollment.Enrollment.Id</p>
+        <p><strong>Institution Name:</strong> @EnrollmentProvider.Enrollment.Enrollment.Institution.Name</p>
+
+        <h4>Signatures</h4>
+        @if (EnrollmentProvider.Enrollment.Signatures.Count > 0)
+        {
+            <ul>
+                @foreach (var signature in EnrollmentProvider.Enrollment.Signatures)
+                {
+                    <li>@signature</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No signatures available.</p>
+        }
+    </div>
+}
+
+@code {
+    List<string> Products = ["verify.instant", "balance"];
+
+    public void OnConnected(EnrollmentCallbackData enrollment)
+    {
+        EnrollmentProvider.Enrollment = enrollment;
+        StateHasChanged();
+    }
+}
+
