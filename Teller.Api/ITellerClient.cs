@@ -24,6 +24,13 @@ namespace Teller.Api
         public Task<List<Transaction>> GetTransactionsAsync(string accessToken, string accountId, int count, string fromId) =>
             InternalGetTransactionsAsync(BuildAuthorizationHeader(accessToken), accountId, count, fromId);
 
+        public async Task<List<string>> GetPaymentsSchemesAsync(string accessToken, string accountId)
+        {
+            var schemes = await InternalGetPaymentSchemesAsync(BuildAuthorizationHeader(accessToken), accountId);
+
+            return schemes.Schemes.SelectMany(x => x.Values).ToList();
+        }
+
         [Get("/institutions")]
         public Task<List<Institution>> GetInstitutionsAsync();      
         
@@ -44,6 +51,9 @@ namespace Teller.Api
 
         [Get("/accounts/{accountId}/transactions?count={count}&from_id={fromId}")]
         protected Task<List<Transaction>> InternalGetTransactionsAsync([Authorize("Basic")] string accessToken, string accountId, int count, string fromId);
+
+        [Options("/accounts/{accountId}/payments")]
+        protected Task<PaymentSchemes> InternalGetPaymentSchemesAsync([Authorize("Basic")] string accessToken, string accountId);
 
         private static string BuildAuthorizationHeader(string accessToken) => Convert.ToBase64String(Encoding.UTF8.GetBytes($"{accessToken}:"));
     }

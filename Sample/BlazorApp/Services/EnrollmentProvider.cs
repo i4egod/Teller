@@ -6,4 +6,9 @@ namespace BlazorApp.Services
     {
         EnrollmentCallbackData? Enrollment { get; set; }
     }
+
+    public class EnrollmentProvider : IEnrollmentProvider
+    {
+        public EnrollmentCallbackData? Enrollment { get; set; }
+    }
 }

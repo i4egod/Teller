@@ -1,5 +1,6 @@
 using BlazorApp.Services;
 using BlazorApp.Components;
+using BlazorApp.Services;
 using Refit;
 using Teller.Api;
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
-builder.Services.AddScoped<IEnrollmentProvider>();
+builder.Services.AddScoped<IEnrollmentProvider, EnrollmentProvider>();
 builder.Services.AddScoped<SecureHttpClientHandler>();
 builder.Services.AddRefitClient<ITellerClient>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(ITellerClient.BaseAddress))

@@ -27,6 +27,13 @@ foreach (var transaction in transactions)
     Console.WriteLine($" - {transaction.Description} ({transaction.Type}): {transaction.Amount} {account.Currency}");
 }
 
+var paymentsSchemes = await apiClient.GetPaymentsSchemesAsync(accessToken, accounts[0].Id);
+Console.WriteLine($"Payment schemes for Account {accounts[0].Id}:");
+foreach (var scheme in paymentsSchemes)
+{
+    Console.WriteLine($" - {scheme}");
+}
+
 var institutions = await apiClient.GetInstitutionsAsync();
 Console.WriteLine($"Total Institutions loaded: {institutions.Count}");
 
